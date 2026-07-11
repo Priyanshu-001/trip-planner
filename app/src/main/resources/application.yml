@@ -1,0 +1,22 @@
+spring:
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: gemma4:e2b
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
