@@ -1,5 +1,5 @@
 package com.example.tripplanner
-
+import models.Requirements
 import java.util.UUID
 
 class TripSession(
@@ -41,7 +41,22 @@ class TripSession(
                 DAYS, HOURS
             }
         }
+        fun toDTO(): models.Requirements {
+            return Requirements(
+                destination = this.destination,
+                source = this.source,
+                tripDuration = models.Requirements.Duration(
+                    this.tripDuration?.value ?: 0, this.tripDuration?.unit?.toDTO() ?: models.Requirements.Duration.Unit.HOURS
+                ),
+                numberOfTravelers = this.numberOfTravelers,
+                includePets = this.includePets,
+                specialRequests = this.specialRequests,
+                interests = this.interests
+            )
+        }
     }
+
+
 
     data class FollowUpQuestion(
 
@@ -63,8 +78,12 @@ open class TripSessionFactory {
             return TripSession(initialPrompt = prompt)
         }
     }
-
-
 }
 
 
+private fun TripSession.Requirements.Duration.Unit.toDTO(): models.Requirements.Duration.Unit {
+    return when (this) {
+        TripSession.Requirements.Duration.Unit.DAYS -> models.Requirements.Duration.Unit.DAYS
+        TripSession.Requirements.Duration.Unit.HOURS -> models.Requirements.Duration.Unit.HOURS
+    }
+}

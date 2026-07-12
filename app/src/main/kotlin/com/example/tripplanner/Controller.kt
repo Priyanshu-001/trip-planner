@@ -4,6 +4,7 @@ import com.example.tripplanner.services.PlanFlowOrchestrator
 import com.example.tripplanner.services.api.Response
 import com.example.tripplanner.services.api.TripResult
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,8 +26,9 @@ class HelloController(val planFlowOrchestrator: PlanFlowOrchestrator) {
         return planFlowOrchestrator.handleNewTripPlanningRequest(tripPlanningRequest).toResponse()
     }
     @PutMapping("/trip/{tripId}")
-    suspend fun planTrip(@RequestParam tripId: String, @RequestBody answers: TripPlanningAnswer)  {
-
+    suspend fun planTrip(@PathVariable tripId: String, @RequestBody answers: TripPlanningAnswer)  {
+        planFlowOrchestrator.handleAnswers(tripId,answers)
+        return
     }
 }
 

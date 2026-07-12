@@ -10,6 +10,7 @@ import models.AgentRequirementDiscoveryRequest
 import models.FollowQuestion
 import models.Requirements
 import models.UserAnsweredQuestions
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,12 +18,16 @@ class RequirementGeneration(
     val requirementsAgent: RequirementAgent, val tripSessionDataServiceImpl: TripSessionDataServiceImpl
 ) : ActionHandler {
     override suspend fun perform(tripSession: TripSession): TripSession {
+        logger.info("being requirement gen")
         extractAndEnrichRequirement(tripSession)
+        logger.info("being question gen")
         generateQuestionsIfNeeded(tripSession)
+        logger.info("next stage")
         return tripSessionDataServiceImpl.save(tripSession)
     }
 
     private fun generateQuestionsIfNeeded(tripSession: TripSession) {
+
         val response = requirementsAgent.getMoreQuestionsIfNeeded(
             AgentRequirementDiscoveryRequest(
                 tripSession.requirements.toDTO(), tripSession.initialPrompt
@@ -48,6 +53,10 @@ class RequirementGeneration(
     }
 
     override fun getAction() = ActionRegistry.Action.GENERATE_REQUIREMENTS
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(RequirementGeneration::class.java)
+    }
 }
 
 private fun TripSession.ingestRequirements(requirements: Requirements?) {
@@ -86,27 +95,6 @@ private fun List<TripSession.FollowUpQuestion>.toDTO(): List<UserAnsweredQuestio
 
 private fun TripSession.FollowUpQuestion.toDTO(): UserAnsweredQuestions {
     return UserAnsweredQuestions(this.question, this.answer ?: "")
-}
-
-private fun TripSession.Requirements.toDTO(): Requirements {
-    return Requirements(
-        destination = this.destination,
-        source = this.source,
-        tripDuration = Requirements.Duration(
-            this.tripDuration?.value ?: 0, this.tripDuration?.unit?.toDTO() ?: Requirements.Duration.Unit.HOURS
-        ),
-        numberOfTravelers = this.numberOfTravelers,
-        includePets = this.includePets,
-        specialRequests = this.specialRequests,
-        interests = this.interests
-    )
-}
-
-private fun TripSession.Requirements.Duration.Unit.toDTO(): Requirements.Duration.Unit {
-    return when (this) {
-        TripSession.Requirements.Duration.Unit.DAYS -> Requirements.Duration.Unit.DAYS
-        TripSession.Requirements.Duration.Unit.HOURS -> Requirements.Duration.Unit.HOURS
-    }
 }
 
 private fun FollowQuestion.toBO(): TripSession.FollowUpQuestion = TripSession.FollowUpQuestion(

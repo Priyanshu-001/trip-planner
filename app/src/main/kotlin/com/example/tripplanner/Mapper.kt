@@ -109,7 +109,8 @@ private fun TripSession.FollowUpQuestion.toEntity() =
         id = id,
         question = question,
         answerChoices = answerChoices,
-        answer = answer
+        answer = answer,
+        answerProcessed = answerProcessed
     )
 
 private fun TripSessionEntity.FollowUpQuestion.toBo() =
@@ -117,5 +118,6 @@ private fun TripSessionEntity.FollowUpQuestion.toBo() =
         id = id,
         question = question,
         answerChoices = answerChoices,
-        answer = answer
+        answer = answer,
+        answerProcessed = answerProcessed
     )

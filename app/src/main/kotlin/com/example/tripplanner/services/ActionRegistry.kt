@@ -11,6 +11,7 @@ class ActionRegistry(val actionHandlerHandlers: List<ActionHandler>) {
     }
 
     enum class Action {
-        GENERATE_REQUIREMENTS
+        GENERATE_REQUIREMENTS,
+        PLAN_TRIP
     }
 }
