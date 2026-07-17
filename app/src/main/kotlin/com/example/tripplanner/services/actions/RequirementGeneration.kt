@@ -63,8 +63,8 @@ private fun TripSession.ingestRequirements(requirements: Requirements?) {
     requirements ?: return
 
     this.requirements.apply {
-        requirements.destination?.let { destination = it }
-        requirements.source?.let { source = it }
+        requirements.destinationCity?.let { destinationCity = it }
+        requirements.sourceCity?.let { sourceCity = it }
 
         requirements.tripDuration?.let {
             tripDuration = TripSession.Requirements.Duration(

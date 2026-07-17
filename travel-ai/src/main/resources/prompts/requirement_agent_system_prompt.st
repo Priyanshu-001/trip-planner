@@ -56,7 +56,7 @@ Good:
 
 {
 "requirements": {
-"destination": "Goa"
+"destinationCity": "Goa"
 }
 }
 
@@ -64,8 +64,8 @@ Bad:
 
 {
 "requirements": {
-"destination": "Goa",
-"source": "UNKNOWN"
+"destinationCity": "Goa",
+"sourceCity": "UNKNOWN"
 }
 }
 
@@ -149,8 +149,8 @@ EXT_REQUIREMENT Example
 
 {
 "requirements": {
-"destination": "Goa",
-"source": "Delhi"
+"destinationCity": "Goa",
+"sourceCity": "Delhi"
 },
 "missingDetails": [
 "Trip duration not specified"

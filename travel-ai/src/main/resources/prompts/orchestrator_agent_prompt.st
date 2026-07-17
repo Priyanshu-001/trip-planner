@@ -27,11 +27,11 @@ Find hotels, resorts, hostels, apartments and other accommodations.
 
 FLIGHT_PLANNING_AGENT
 Purpose:
-Find flights between the source and destination.
+Find flights between the sourceCity and destinationCity.
 
 ROUTE_FINDING_AGENT
 Purpose:
-Plan transportation between cities or within a destination.
+Plan transportation between cities or within a destinationCity.
 
 ACTIVITY_PLANNING_AGENT
 Purpose:
@@ -56,27 +56,27 @@ Pass only information useful to that specific agent.
 Examples:
 
 Flight Agent
-- source
-- destination
+- sourceCity
+- destinationCity
 - tripDuration
 
 Stay Agent
-- destination
+- destinationCity
 - tripDuration
 - numberOfTravelers
 - includePets
 - specialRequests
 
 Activity Agent
-- destination
+- destinationCity
 - tripDuration
 - interests
 - specialRequests
 - numberOfTravelers
 
 Route Agent
-- source
-- destination
+- sourceCity
+- destinationCity
 - tripDuration
 
 ---
@@ -119,8 +119,8 @@ Plan a 5 day Goa vacation from Delhi. I like beaches and food.
 Requirements
 
 {
-  "destination":"Goa",
-  "source":"Delhi",
+  "destinationCity":"Goa",
+  "sourceCity":"Delhi",
   "tripDuration":{"value":5,"unit":"DAYS"},
   "numberOfTravelers":2,
   "includePets":false,
@@ -137,12 +137,12 @@ Output
       "goal":"Find flights from Delhi to Goa.",
       "context":[
         {
-          "name":"source",
+          "name":"sourceCity",
           "value":"Delhi",
           "importanceLevel":"MUST_HAVE"
         },
         {
-          "name":"destination",
+          "name":"destinationCity",
           "value":"Goa",
           "importanceLevel":"MUST_HAVE"
         }
@@ -153,7 +153,7 @@ Output
       "goal":"Find accommodation in Goa.",
       "context":[
         {
-          "name":"destination",
+          "name":"destinationCity",
           "value":"Goa",
           "importanceLevel":"MUST_HAVE"
         },
@@ -169,7 +169,7 @@ Output
       "goal":"Recommend activities matching the user's interests.",
       "context":[
         {
-          "name":"destination",
+          "name":"destinationCity",
           "value":"Goa",
           "importanceLevel":"MUST_HAVE"
         },
@@ -194,8 +194,8 @@ Find me the cheapest flight from Delhi to Tokyo.
 Requirements
 
 {
-  "destination":"Tokyo",
-  "source":"Delhi",
+  "destinationCity":"Tokyo",
+  "sourceCity":"Delhi",
   "tripDuration":null,
   "numberOfTravelers":1,
   "includePets":false,
@@ -212,12 +212,12 @@ Output
       "goal":"Find the cheapest flight.",
       "context":[
         {
-          "name":"source",
+          "name":"sourceCity",
           "value":"Delhi",
           "importanceLevel":"MUST_HAVE"
         },
         {
-          "name":"destination",
+          "name":"destinationCity",
           "value":"Tokyo",
           "importanceLevel":"MUST_HAVE"
         }
@@ -237,8 +237,8 @@ I will stay in Paris for four days. Suggest things to do.
 Requirements
 
 {
-  "destination":"Paris",
-  "source":null,
+  "destinationCity":"Paris",
+  "sourceCity":null,
   "tripDuration":{"value":4,"unit":"DAYS"},
   "numberOfTravelers":1,
   "includePets":false,
@@ -255,7 +255,7 @@ Output
       "goal":"Plan activities for four days.",
       "context":[
         {
-          "name":"destination",
+          "name":"destinationCity",
           "value":"Paris",
           "importanceLevel":"MUST_HAVE"
         },

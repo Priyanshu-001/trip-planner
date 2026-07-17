@@ -31,9 +31,9 @@ data class TripSessionEntity(
     }
     data class Requirements(
 
-        var destination: String? = null,
+        var destinationCity: String? = null,
 
-        var source: String? = null,
+        var sourceCity: String? = null,
 
         var tripDuration: Duration? = null,
 

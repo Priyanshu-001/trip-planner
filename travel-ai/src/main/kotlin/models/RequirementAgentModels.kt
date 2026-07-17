@@ -28,8 +28,8 @@ data class UserAnsweredQuestions(
 )
 
 data class Requirements(
-    val destination: String?,
-    val source: String?,
+    val destinationCity: String?,
+    val sourceCity: String?,
     val tripDuration: Duration?,
     val numberOfTravelers: Int? = 0,
     val includePets: Boolean? = false,

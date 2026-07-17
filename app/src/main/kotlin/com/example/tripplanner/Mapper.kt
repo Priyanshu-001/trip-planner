@@ -56,8 +56,8 @@ private fun TripSessionEntity.Status.toBo() =
 
 private fun TripSession.Requirements.toEntity() =
     TripSessionEntity.Requirements(
-        destination = destination,
-        source = source,
+        destinationCity = destinationCity,
+        sourceCity = sourceCity,
         tripDuration = tripDuration?.toEntity(),
         numberOfTravelers = numberOfTravelers,
         includePets = includePets,
@@ -67,8 +67,8 @@ private fun TripSession.Requirements.toEntity() =
 
 private fun TripSessionEntity.Requirements.toBo() =
     TripSession.Requirements(
-        destination = destination,
-        source = source,
+        destinationCity = destinationCity,
+        sourceCity = sourceCity,
         tripDuration = tripDuration?.toBo(),
         numberOfTravelers = numberOfTravelers,
         includePets = includePets,

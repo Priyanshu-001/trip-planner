@@ -18,9 +18,9 @@ class TripSession(
 
     data class Requirements(
 
-        var destination: String? = null,
+        var destinationCity: String? = null,
 
-        var source: String? = null,
+        var sourceCity: String? = null,
 
         var tripDuration: Duration? = null,
 
@@ -43,8 +43,8 @@ class TripSession(
         }
         fun toDTO(): models.Requirements {
             return Requirements(
-                destination = this.destination,
-                source = this.source,
+                destinationCity = this.destinationCity,
+                sourceCity = this.sourceCity,
                 tripDuration = models.Requirements.Duration(
                     this.tripDuration?.value ?: 0, this.tripDuration?.unit?.toDTO() ?: models.Requirements.Duration.Unit.HOURS
                 ),

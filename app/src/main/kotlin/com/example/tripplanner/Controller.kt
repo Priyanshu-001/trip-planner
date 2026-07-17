@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -48,7 +47,7 @@ private fun TripSession.toResponse(): Response {
         else ->
             Response.Done(
                 tripResult = TripResult(
-                    destination = requirements.destination.orEmpty(),
+                    destination = requirements.destinationCity.orEmpty(),
                     summary = ""
                 )
             )
