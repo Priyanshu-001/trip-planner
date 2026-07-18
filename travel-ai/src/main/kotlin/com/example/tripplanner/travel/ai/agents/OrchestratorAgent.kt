@@ -72,9 +72,8 @@ enum class ImportanceLevel {
 
 enum class AgentEnum {
     STAY_FINDING_AGENT,
-    ROUTE_FINDING_AGENT,
-    ACTIVITY_PLANNING_AGENT,
-    FLIGHT_PLANNING_AGENT
+    TRANSIT_AGENT,
+    FOOD_RECOMMENDATION_AGENT
 }
 
 
