@@ -1,5 +1,9 @@
 package com.example.tripplanner
+import com.example.tripplanner.services.actions.sub.actions.SubActionType
+import com.example.tripplanner.travel.ai.agents.sub.agents.InteractiveElement
 import models.Requirements
+import models.SubAgentInstructions
+import java.util.EnumMap
 import java.util.UUID
 
 class TripSession(
@@ -8,10 +12,25 @@ class TripSession(
     var status: Status = Status.INITIALIZED,
     val requirements: Requirements = Requirements(),
     val followUpQuestions: MutableList<FollowUpQuestion> = mutableListOf(),
-
+    val plan: Plan? = null
     ) {
 
+    data class  Plan(
+        val planStatus: PlanStatus,
+        val subActionToSubPlan: EnumMap<SubActionType, SubPlan>? = null
 
+    )
+    data class SubPlan(
+        val subPlanStatus: PlanStatus,
+        val title: String? = null,
+        val description: String?  = null,
+        val interactiveElements: List<InteractiveElement> = emptyList(),
+        val subAgentInstructions: SubAgentInstructions
+    )
+
+    enum class PlanStatus {
+        NOT_READY, READY, ALL_DONE
+    }
     enum class Status {
         INITIALIZED, COLLECTING_REQUIREMENTS, WAITING_FOR_USER_INPUT, READY_FOR_PLANNING, PLANNING, COMPLETED, FAILED
     }

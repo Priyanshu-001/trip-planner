@@ -17,7 +17,11 @@
     <dependencies>
 
         <!-- Internal modules -->
-
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>gmaps-integration</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!-- Spring AI -->
         <dependency>

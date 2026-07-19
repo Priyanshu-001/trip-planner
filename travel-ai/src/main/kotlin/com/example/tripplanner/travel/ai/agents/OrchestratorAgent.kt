@@ -1,5 +1,6 @@
 package com.example.tripplanner.travel.ai.agents
 
+import models.AgentContext
 import models.AgentRequirementExtractionResponse
 import models.QueryRejection
 import models.Requirements
@@ -59,21 +60,11 @@ data class AgentInstructions(
     val context: List<AgentContext> = emptyList()
 )
 
-data class AgentContext(
-    val name: String,
-    val value: String,
-    val importanceLevel: ImportanceLevel = ImportanceLevel.MUST_HAVE
-)
-
-enum class ImportanceLevel {
-    MUST_HAVE,
-    GOOD_TO_HAVE
-}
-
 enum class AgentEnum {
-    STAY_FINDING_AGENT,
+    STAY_AGENT,
     TRANSIT_AGENT,
-    FOOD_RECOMMENDATION_AGENT
+    RESTAURANT_AGENT,
+    ATTRACTION_AGENT
 }
 
 
