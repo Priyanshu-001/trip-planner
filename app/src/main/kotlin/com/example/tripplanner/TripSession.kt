@@ -12,21 +12,40 @@ class TripSession(
     var status: Status = Status.INITIALIZED,
     val requirements: Requirements = Requirements(),
     val followUpQuestions: MutableList<FollowUpQuestion> = mutableListOf(),
-    val plan: Plan? = null
+    var plan: Plan? = null
     ) {
+    fun getAgentInstructionBySubAction(subActionType: SubActionType): SubAgentInstructions {
+        val subPlan = getSubPlan(subActionType)
+        return subPlan.subAgentInstructions
+    }
+
+    private fun getSubPlan(subActionType: SubActionType) : SubPlan {
+         val subPlan = plan?.subActionToSubPlan?.get(subActionType)
+        return subPlan ?: throw RuntimeException()
+    }
+    fun getPlanResult(subActionType: SubActionType): PlanResult {
+       return getSubPlan(subActionType).planResult ?: throw RuntimeException()
+    }
+
+
 
     data class  Plan(
         val planStatus: PlanStatus,
         val subActionToSubPlan: EnumMap<SubActionType, SubPlan>? = null
-
     )
+    data class PlanResult( val subPlanStatus: PlanStatus,
+                           val title: String? = null,
+                           val description: String?  = null,
+                           var status: SubPlanStatus = SubPlanStatus.READY,
+                           val interactiveElements: List<InteractiveElement> = emptyList())
     data class SubPlan(
-        val subPlanStatus: PlanStatus,
-        val title: String? = null,
-        val description: String?  = null,
-        val interactiveElements: List<InteractiveElement> = emptyList(),
+        val planResult: PlanResult? = null,
         val subAgentInstructions: SubAgentInstructions
     )
+
+    enum class SubPlanStatus {
+        READY, PENDING, DONE
+    }
 
     enum class PlanStatus {
         NOT_READY, READY, ALL_DONE

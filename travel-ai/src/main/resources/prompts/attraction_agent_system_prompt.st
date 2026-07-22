@@ -59,9 +59,9 @@ Only use information returned by the Attraction Search Tool.
 
 Return a JSON object containing:
 
-- oneLineExplanation
-- detailedExplanation
-- attraction
+- oneLineExplanation -  Must have
+- detailedExplanation - Must have
+- attraction - optional this the result of tool call do not fabricate this
 
 The attraction list must contain at most FIVE attractions.
 

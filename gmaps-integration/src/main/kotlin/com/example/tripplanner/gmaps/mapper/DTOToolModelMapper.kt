@@ -91,17 +91,17 @@ private fun ComputeRoutesResponse.Route.toRoute() =
     )
 
 fun HotelSearchRequest.toGoogleRequest(): SearchTextRequest {
-    val destination = destination.trim()
-    val preferencesText = preferences.filter { it.isNotBlank() }.joinToString(" ")
-    val textQuery = if (preferencesText.isBlank()) {
+    val destination = destination?.trim() ?: ""
+    val preferencesText = preferences?.filter { it.isNotBlank() }?.joinToString(" ")
+    val textQuery = if (preferencesText?.isBlank() == true) {
         "Hotels in $destination"
     } else {
-        "$preferencesText hotels in $destination"
+        "${preferencesText ?: ""} hotels in $destination"
     }
 
     return SearchTextRequest(
         textQuery = textQuery,
-        pageSize = maxResults
+        pageSize = maxResults ?: 5
     )
 }
 

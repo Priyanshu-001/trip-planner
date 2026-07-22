@@ -1,7 +1,6 @@
 package com.example.tripplanner.travel.ai.agents
 
 import models.AgentContext
-import models.AgentRequirementExtractionResponse
 import models.QueryRejection
 import models.Requirements
 import org.springframework.ai.chat.client.ChatClient

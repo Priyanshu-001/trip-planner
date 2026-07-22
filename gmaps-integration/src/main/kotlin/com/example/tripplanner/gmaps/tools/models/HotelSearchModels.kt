@@ -2,11 +2,11 @@ package com.example.tripplanner.gmaps.tools.models
 
 data class HotelSearchRequest(
 
-    val destination: String,
+    val destination: String?,
 
-    val preferences: List<String> = emptyList(),
+    val preferences: List<String>? = emptyList(),
 
-    val maxResults: Int = 5
+    val maxResults: Int? = 5
 )
 
 data class HotelSearchResponse(

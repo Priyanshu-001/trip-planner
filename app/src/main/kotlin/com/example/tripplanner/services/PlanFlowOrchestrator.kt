@@ -4,10 +4,11 @@ import com.example.tripplanner.TripPlanningAnswer
 import com.example.tripplanner.TripPlanningRequest
 import com.example.tripplanner.TripSession
 import com.example.tripplanner.TripSessionFactory
+import com.example.tripplanner.services.actions.sub.actions.SubAction
 import org.springframework.stereotype.Service
 
 @Service
-class PlanFlowOrchestrator(val tripDataService: TripSessionDataServiceImpl, val actionRegistry: ActionRegistry) {
+class PlanFlowOrchestrator(val tripDataService: TripSessionDataServiceImpl, val actionRegistry: ActionRegistry, val perFormSubAction: SubAction) {
 
     suspend fun handleNewTripPlanningRequest(tripPlanningRequest: TripPlanningRequest): TripSession {
         val tripSession = TripSessionFactory.createTripSession(tripPlanningRequest.initialPrompt)
@@ -15,17 +16,21 @@ class PlanFlowOrchestrator(val tripDataService: TripSessionDataServiceImpl, val 
     }
 
     suspend fun handleAnswers(tripId: String, answers: TripPlanningAnswer): TripSession {
-       val tripSession =  tripDataService.findById(tripId)
+        val nTripSession = tripDataService.findById(tripId)!!
         //TODO: add conditions if its already orchestrated
-       tripSession!!.enrichWithAnswers(answers)
-        val nTripSession = actionRegistry.getActionHandler(ActionRegistry.Action.GENERATE_REQUIREMENTS).perform(tripSession)
-//        launchOrhestratorifNeeded(nTripSession)
-        actionRegistry.getActionHandler(ActionRegistry.Action.PLAN_TRIP).perform(nTripSession)
+//        tripSession!!.enrichWithAnswers(answers)
+//        val nTripSession =
+//            actionRegistry.getActionHandler(ActionRegistry.Action.GENERATE_REQUIREMENTS).perform(tripSession)
+//        actionRegistry.getActionHandler(ActionRegistry.Action.PLAN_TRIP).perform(nTripSession)
+        launchOrchestratorIfNeeded(nTripSession)
         return nTripSession
     }
 
-    private fun launchOrhestratorifNeeded(nTripSession: TripSession) {
-
+    private suspend fun launchOrchestratorIfNeeded(nTripSession: TripSession) {
+        if(nTripSession.status == TripSession.Status.WAITING_FOR_USER_INPUT) {
+            return
+        }
+        nTripSession.plan?.subActionToSubPlan?.forEach { perFormSubAction.perform(nTripSession,it.key) }
     }
 
 }

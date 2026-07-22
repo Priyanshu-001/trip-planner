@@ -15,20 +15,23 @@ class SubAgent<T: SubAgentOutput>(private val chatClientBuilder: ChatClient.Buil
 
     fun perform(subAgentInstructions: SubAgentInstructions): T {
         return chatClient.prompt()
-            .user { it.text(userPrompt.trimIndent()) }
+            .user { it.text(userPrompt.trimIndent())
+                .param("requirements", subAgentInstructions.requirements)
+                .param("context", subAgentInstructions.context)
+                .param("goal", subAgentInstructions.goal)
+            }
             .call()
             .entity(outputType)!!
     }
     fun getType() = agentType
-    fun getChatClient(): ChatClient {
-
+    private fun buildChatClient(): ChatClient {
         return chatClientBuilder
             .defaultSystem(systemPrompt)
             .defaultTools(tools)
             .build()
     }
 
-     val chatClient = getChatClient()
+     val chatClient: ChatClient = buildChatClient()
 
 }
 
@@ -45,7 +48,7 @@ sealed interface SubAgentOutput {
     data class TransitGeneration(
         override val oneLineExplanation: String,
         override val detailedExplanation: String,
-        val routes: InteractiveElement.Route,
+        val route: InteractiveElement.Route,
     ) : SubAgentOutput
 
     data class RestaurantSuggestions(
@@ -69,9 +72,9 @@ sealed interface InteractiveElement {
     data class Hotel(
         override val id: String,
         override val title: String,
-        val rating: Double,
-        val address: String,
-        val mapsUrl: String,
+        val rating: Double?,
+        val address: String?,
+        val mapsUrl: String?,
         val imageUrl: String?
     ) : InteractiveElement
 

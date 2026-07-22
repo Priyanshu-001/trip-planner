@@ -4,7 +4,7 @@ import com.example.tripplanner.TripSession
 
 interface SubAction {
 
-    fun perform(tripSession: TripSession, subActionType: SubActionType)
+   suspend fun perform(tripSession: TripSession, subActionType: SubActionType)
 
 }
 

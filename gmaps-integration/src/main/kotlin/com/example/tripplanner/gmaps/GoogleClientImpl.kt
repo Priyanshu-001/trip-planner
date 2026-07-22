@@ -5,6 +5,7 @@ import com.example.tripplanner.gmaps.dto.ComputeRoutesResponse
 import com.example.tripplanner.gmaps.dto.SearchTextRequest
 import com.example.tripplanner.gmaps.dto.SearchTextResponse
 import kotlinx.coroutines.reactive.awaitSingle
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -32,7 +33,7 @@ class GoogleMapsClientImpl(
     override suspend fun searchText(
         request: SearchTextRequest
     ): SearchTextResponse {
-
+        log.info("Lets gooo")
         return placesClient
             .post()
             .uri("/v1/places:searchText")
@@ -57,7 +58,7 @@ class GoogleMapsClientImpl(
     override suspend fun computeRoutes(
         request: ComputeRoutesRequest
     ): ComputeRoutesResponse {
-
+        log.info("Lets goo again")
         return routesClient
             .post()
             .uri("/directions/v2:computeRoutes")
@@ -74,5 +75,9 @@ class GoogleMapsClientImpl(
             .retrieve()
             .bodyToMono(ComputeRoutesResponse::class.java)
             .awaitSingle()
+    }
+
+    companion object {
+        private val log = LoggerFactory.getLogger(GoogleMapsClientImpl::class.java)
     }
 }

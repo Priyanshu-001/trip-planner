@@ -2,19 +2,19 @@ package com.example.tripplanner.services.actions.sub.actions
 
 import com.example.tripplanner.TripSession
 import com.example.tripplanner.services.TripSessionDataServiceImpl
+import com.example.tripplanner.services.actions.ingest
 import com.example.tripplanner.travel.ai.agents.AgentEnum
 import com.example.tripplanner.travel.ai.agents.sub.agents.SubAgent
-import com.example.tripplanner.travel.ai.agents.sub.agents.SubAgentOutput
 import org.springframework.stereotype.Service
 
 @Service
-class getTransitOptions(
+class SubActionService(
     private val subAgents: List<SubAgent<*>>,
     private val tripSessionDataServiceImpl: TripSessionDataServiceImpl
 ) : SubAction {
     private val subAgentBySubAgentType = subAgents.associateBy { it.getType() }
 
-    override fun perform(
+    override suspend fun perform(
         tripSession: TripSession,
         subActionType: SubActionType
     ) {
@@ -24,9 +24,10 @@ class getTransitOptions(
                 subAgentBySubAgentType[subActionType.toAgent()] ?: throw RuntimeException() //TODO: Correct exceptions
             val agentInstructions = tripSession.getAgentInstructionBySubAction(subActionType)
             val subAgentOutput = subAgent.perform(agentInstructions)
-            tripSessionDataServiceImpl.saveSubTaskResult(tripSession,subActionType)
+            locallyLockedTripSession.ingest(subAgentOutput, subActionType)
+            tripSessionDataServiceImpl.saveSubTaskResult(locallyLockedTripSession,subActionType)
         } finally {
-            tripSessionDataServiceImpl.markSubTaskAsNotStarted(subActionType)
+            tripSessionDataServiceImpl.markSubTaskAsNotStarted(tripSession, subActionType)
         }
     }
 }

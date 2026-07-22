@@ -21,7 +21,9 @@ data class TripSessionEntity(
 
     val createdAt: Instant = Instant.now(),
 
-    var updatedAt: Instant = Instant.now()
+    var updatedAt: Instant = Instant.now(),
+
+    val plan: Plan? = null
 
 ) {
 
@@ -70,4 +72,47 @@ data class TripSessionEntity(
 
         var answerProcessed: Boolean = false
     )
+    
+    data class Plan(
+        val planStatus: PlanStatus,
+        val subActionToSubPlan: Map<String, SubPlan>? = null
+    )
+
+    data class PlanResult(
+        val subPlanStatus: PlanStatus,
+        val title: String? = null,
+        val description: String? = null,
+        var status: SubPlanStatus = SubPlanStatus.READY,
+        val interactiveElements: List<String> = emptyList()
+    )
+
+    data class SubPlan(
+        val planResult: PlanResult? = null,
+        val subAgentInstructions: SubAgentInstructions
+    )
+
+    enum class SubPlanStatus {
+        READY, PENDING, DONE
+    }
+
+    enum class PlanStatus {
+        NOT_READY, READY, ALL_DONE
+    }
+
+    data class SubAgentInstructions(
+        val goal: String,
+        val context: List<AgentContext> = emptyList(),
+        val requirements: Requirements
+    )
+
+    data class AgentContext(
+        val name: String,
+        val value: String,
+        val importanceLevel: ImportanceLevel = ImportanceLevel.MUST_HAVE
+    )
+
+    enum class ImportanceLevel {
+        MUST_HAVE,
+        GOOD_TO_HAVE
+    }
 }

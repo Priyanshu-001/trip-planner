@@ -9,6 +9,9 @@ spring:
     mongodb:
       uri: ${MONGODB_URI}
 
+google:
+  maps:
+    api-key: Api
 ---
 spring:
   config:
